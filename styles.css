@@ -205,6 +205,7 @@ html, body {
   color: rgba(255, 255, 255, 0.28);
   letter-spacing: 0.04em;
   transition: color 0.25s;
+  margin-top: 10px;
 }
 
 .channel.active .ch-val {
