@@ -9,8 +9,6 @@ const sounds = [
 ];
 
 const audioNodes = {};
-let masterVolume = 0.85;
-let muted = false;
 
 function getAudio(id, file) {
   if (audioNodes[id]) return audioNodes[id];
@@ -21,27 +19,15 @@ function getAudio(id, file) {
   return audio;
 }
 
-function applyVolume(id, sliderVal) {
-  const audio = audioNodes[id];
-  if (!audio) return;
-  const effective = muted ? 0 : (sliderVal / 100) * masterVolume;
-  audio.volume = Math.min(1, Math.max(0, effective));
-}
-
 function setVol(id, file, sliderVal) {
   const audio = getAudio(id, file);
-  const effective = muted ? 0 : (sliderVal / 100) * masterVolume;
+  const effective = (sliderVal / 100) * 0.5;
   audio.volume = Math.min(1, Math.max(0, effective));
-  if (sliderVal > 0 && audio.paused && !muted) {
+  if (sliderVal > 0 && audio.paused) {
     audio.play().catch(() => {});
-  } else if ((sliderVal === 0 || muted) && !audio.paused) {
-    if (sliderVal === 0) audio.pause();
+  } else if (sliderVal === 0 && !audio.paused) {
+    audio.pause();
   }
-}
-
-function getSliderVal(id) {
-  const el = document.getElementById('sl-' + id);
-  return el ? parseInt(el.value) : 0;
 }
 
 function buildUI() {
@@ -74,37 +60,6 @@ function buildUI() {
       document.getElementById('val-' + s.id).textContent = v;
       setVol(s.id, s.file, v);
       ch.classList.toggle('active', v > 0);
-    });
-  });
-
-  // Master volume slider
-  const masterSlider = document.getElementById('masterSlider');
-  const masterFill   = document.getElementById('masterFill');
-  const masterThumb  = document.getElementById('masterThumb');
-
-  masterSlider.addEventListener('input', () => {
-    const v = parseInt(masterSlider.value);
-    masterVolume = v / 100;
-    masterFill.style.width = v + '%';
-    masterThumb.style.left = `calc(${v}% - 10px)`;
-    sounds.forEach(s => applyVolume(s.id, getSliderVal(s.id)));
-  });
-
-  // Power / mute button
-  const powerBtn = document.getElementById('powerBtn');
-  powerBtn.addEventListener('click', () => {
-    muted = !muted;
-    powerBtn.classList.toggle('muted', muted);
-    sounds.forEach(s => {
-      const audio = audioNodes[s.id];
-      if (!audio) return;
-      const v = getSliderVal(s.id);
-      if (muted) {
-        audio.volume = 0;
-      } else {
-        audio.volume = Math.min(1, (v / 100) * masterVolume);
-        if (v > 0 && audio.paused) audio.play().catch(() => {});
-      }
     });
   });
 
