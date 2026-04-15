@@ -1,199 +1,329 @@
-* {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      background: #0a0e17;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-    .wrap {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      width: 100%;
-      max-width: 860px;
-      margin: 2rem;
-    }
+/* ─── Background ─── */
+.bg {
+  position: fixed;
+  inset: 0;
+  background-image: url('img/backgroundImage.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
 
-    .bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80');
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.55);
-    }
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 20, 0.48);
+  backdrop-filter: blur(1px);
+  z-index: 1;
+}
 
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(5, 10, 18, 0.45);
-    }
+/* ─── Scene ─── */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 120px;
+}
 
-    .content {
-      position: relative;
-      z-index: 2;
-      padding: 2.5rem 2rem 2rem;
-    }
+/* ─── Title ─── */
+.title {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.6rem;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
 
-    .title {
-      text-align: center;
-      color: rgba(255, 255, 255, 0.92);
-      font-size: 26px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      margin-bottom: 6px;
-    }
+/* ─── Card ─── */
+.card {
+  width: 100%;
+  background: rgba(18, 26, 42, 0.68);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  padding: 2.2rem 2rem 0;
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
 
-    .sub {
-      text-align: center;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 12px;
-      margin-bottom: 2.5rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+/* ─── Channel grid ─── */
+.channels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 1.6rem;
+}
 
-    .channels {
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      gap: 10px;
-    }
+/* ─── Single channel ─── */
+.channel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1.2rem 0 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.3s, border-color 0.3s;
+}
 
-    .channel {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
+.channel.active {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+}
 
-    .ch-icon {
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* ─── Icon ─── */
+.ch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.3s;
+}
 
-    .ch-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke: rgba(255, 255, 255, 0.45);
-      stroke-width: 1.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.25s;
-    }
+.ch-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-    .channel.active .ch-icon svg {
-      stroke: rgba(255, 255, 255, 0.95);
-    }
+.channel.active .ch-icon {
+  color: rgba(255, 255, 255, 0.90);
+}
 
-    .ch-label {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.35);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      transition: color 0.25s;
-    }
+/* ─── Label ─── */
+.ch-label {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0.03em;
+  transition: color 0.3s;
+}
 
-    .channel.active .ch-label {
-      color: rgba(255, 255, 255, 0.85);
-    }
+.channel.active .ch-label {
+  color: rgba(255, 255, 255, 0.92);
+}
 
-    .slider-track {
-      position: relative;
-      height: 190px;
-      width: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* ─── Vertical slider ─── */
+.slider-track {
+  position: relative;
+  height: 220px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .track-bg {
-      position: absolute;
-      width: 3px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
-    }
+.track-bg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 4px;
+}
 
-    .track-fill {
-      position: absolute;
-      bottom: 0;
-      width: 3px;
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 2px;
-      transition: background 0.25s;
-      pointer-events: none;
-    }
+.track-fill {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 5px;
+  background: rgba(185, 195, 210, 0.80);
+  border-radius: 4px;
+  pointer-events: none;
+  transition: background 0.25s;
+}
 
-    .channel.active .track-fill {
-      background: rgba(255, 255, 255, 0.95);
-    }
+.channel.active .track-fill {
+  background: rgba(215, 222, 235, 0.97);
+}
 
-    .ch-range {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      writing-mode: vertical-lr;
-      direction: rtl;
-    }
+.ch-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: ns-resize;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  z-index: 2;
+}
 
-    .thumb {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-      pointer-events: none;
-      transition: transform 0.1s, background 0.25s;
-      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-    }
+.thumb {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  background: rgb(220, 225, 235);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  transition: background 0.25s;
+}
 
-    .channel.active .thumb {
-      background: #fff;
-    }
+.channel.active .thumb {
+  background: #fff;
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(255, 255, 255, 0.25);
+}
 
-    .ch-val {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.3);
-      font-weight: 400;
-      min-width: 24px;
-      text-align: center;
-    }
+/* ─── Volume readout ─── */
+.ch-val {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.04em;
+  transition: color 0.25s;
+}
 
-    .channel.active .ch-val {
-      color: rgba(255, 255, 255, 0.6);
-    }
+.channel.active .ch-val {
+  color: rgba(255, 255, 255, 0.55);
+}
 
-    .hint {
-      text-align: center;
-      color: rgba(255, 255, 255, 0.25);
-      font-size: 12px;
-      margin-top: 2rem;
-      letter-spacing: 0.06em;
-      min-height: 16px;
-      transition: color 0.3s;
-    }
+/* ─── Master bar ─── */
+.master-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.2rem 1rem 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
 
-    @media (max-width: 600px) {
-      .channels {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 8px;
-      }
+/* Power button */
+.power-btn {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
 
-      .slider-track {
-        height: 150px;
-      }
-    }
+.power-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.power-btn.muted {
+  background: rgba(220, 80, 80, 0.18);
+  border-color: rgba(220, 80, 80, 0.4);
+  color: rgba(220, 100, 100, 0.9);
+}
+
+.power-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+/* Master right section */
+.master-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.master-label {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.60);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Horizontal master slider */
+.master-track-wrap {
+  position: relative;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.master-track-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 4px;
+}
+
+.master-track-fill {
+  position: absolute;
+  left: 0;
+  height: 5px;
+  background: rgba(210, 218, 232, 0.90);
+  border-radius: 4px;
+  pointer-events: none;
+  transition: background 0.2s;
+}
+
+.master-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.master-thumb {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgb(218, 224, 235);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.15);
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .scene { padding: 0 40px; }
+  .channels { grid-template-columns: repeat(4, 1fr); }
+  .slider-track { height: 160px; }
+}

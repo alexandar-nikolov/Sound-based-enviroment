@@ -4,18 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ambient Sound Mixer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <div class="bg"></div>
-    <div class="overlay"></div>
-    <div class="content">
-      <p class="title">Ambient Sound Mixer</p>
-      <p class="sub">Blend · Mix · Escape</p>
+
+  <div class="bg"></div>
+  <div class="bg-overlay"></div>
+
+  <div class="scene">
+    <h1 class="title">Ambient Sound Mixer</h1>
+
+    <div class="card">
       <div class="channels" id="channels"></div>
-      <p class="hint" id="hint">Move a slider to begin</p>
+
+      <div class="master-bar">
+        <button class="power-btn" id="powerBtn" title="Mute / Unmute all">
+          <i data-lucide="power"></i>
+        </button>
+        <div class="master-right">
+          <span class="master-label">Master Volume</span>
+          <div class="master-track-wrap">
+            <div class="master-track-bg"></div>
+            <div class="master-track-fill" id="masterFill" style="width:85%"></div>
+            <input type="range" id="masterSlider" class="master-range" min="0" max="100" value="85">
+            <div class="master-thumb" id="masterThumb" style="left:calc(85% - 10px)"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
