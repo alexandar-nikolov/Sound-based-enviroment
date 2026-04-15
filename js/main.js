@@ -8,27 +8,6 @@ const sounds = [
   { id: 'crickets',  label: 'Crickets',  icon: 'bug',             file: 'sounds/crickets.mp3'  },
 ];
 
-const audioNodes = {};
-
-function getAudio(id, file) {
-  if (audioNodes[id]) return audioNodes[id];
-  const audio = new Audio(file);
-  audio.loop = true;
-  audio.volume = 0;
-  audioNodes[id] = audio;
-  return audio;
-}
-
-function setVol(id, file, sliderVal) {
-  const audio = getAudio(id, file);
-  const effective = (sliderVal / 100) * 0.5;
-  audio.volume = Math.min(1, Math.max(0, effective));
-  if (sliderVal > 0 && audio.paused) {
-    audio.play().catch(() => {});
-  } else if (sliderVal === 0 && !audio.paused) {
-    audio.pause();
-  }
-}
 
 function buildUI() {
   const grid = document.getElementById('channels');
